@@ -1,0 +1,2 @@
+Newdevice sample sample
+End

@@ -1,0 +1,2 @@
+Newdevice quadricarray quadrics
+End

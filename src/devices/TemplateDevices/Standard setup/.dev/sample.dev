@@ -1,0 +1,6 @@
+sample
+from basesource
+3
+SourceName basesource Input source device
+Geom3DName geom3d Input geom3d device
+CompName composition Input composition device

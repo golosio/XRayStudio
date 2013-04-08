@@ -1,0 +1,141 @@
+AC_INIT(XRayStudio,0.1)
+AC_CONFIG_HEADERS(xraystudio-config.h)
+AM_INIT_AUTOMAKE
+AC_PROG_CC
+AC_PROG_CXX
+
+AC_MSG_CHECKING(QT4 directory)
+QTDIR=xxx
+AC_ARG_WITH([qt-dir],
+             AC_HELP_STRING([--with-qt-dir=/path/to/Qt-4],
+                            [to specify the path to the Qt-4 directory.]),
+             [QTPATHS="$withval"],
+             [QTPATHS="/usr/local/qt4/ /c/Qt/4"])
+
+for x in $QTPATHS; do
+    if test -d $x ; then
+       QTDIR="$x"
+    fi
+done
+if test $QTDIR = xxx ; then
+   AC_MSG_ERROR(Could not locate QT 4)
+fi
+AC_MSG_RESULT($QTDIR)
+host=`uname -a` # AC_CANONICAL_HOST is broken at the time of this writing.
+case $host in
+  MINGW32*)
+    AC_MSG_NOTICE(MinGW detected.)
+    QTLIBS="-L$QTDIR/lib -lxrmc -lxrl -lopengl32 -lglu32 -lgdi32 -luser32 -lmingw32 -lqtmain -lQtOpenGL4 -lQtGui4 -lQtCore4 -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-s -Wl,-subsystem,windows"
+    QTINC="-I$QTDIR/include -I$QTDIR/include/QtCore -I$QTDIR/include/QtGui -I$QTDIR/include/QtOpenGL -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
+    QTBIN="$QTDIR/bin"
+    ;;
+  *)
+    AC_MSG_NOTICE(I'm assuming this is Linux)
+    AC_PATH_XTRA
+    QTLIBS="-Wl,-rpath,$QTDIR/lib -L$QTDIR/lib -lQtGui -lQtOpenGL -lQtCore $X_LIBS -lX11 -lXext -lXmu -lXt -lXi $X_EXTRA_LIBS -lGLU -lGL -lpthread"
+    QTINC="-I$QTDIR/include -I$QTDIR/include/QtGui -I$QTDIR/include/QtCore -I$QTDIR/include/QtOpenGL $X_CFLAGS -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED"
+    QTBIN="$QTDIR/bin"
+    ;;
+esac
+
+LIBS="$LIBS $QTLIBS"
+
+QTINC="$QTINC \
+-I/home/golosio/progetti/xrmc/xrmc/src/arrayNd \
+-I/home/golosio/progetti/xrmc/xrmc/src/composition \
+-I/home/golosio/progetti/xrmc/xrmc/src/detector \
+-I/home/golosio/progetti/xrmc/xrmc/src/device \
+-I/home/golosio/progetti/xrmc/xrmc/src/exception \
+-I/home/golosio/progetti/xrmc/xrmc/src/geom3d \
+-I/home/golosio/progetti/xrmc/xrmc/src/gettoken \
+-I/home/golosio/progetti/xrmc/xrmc/src/main \
+-I/home/golosio/progetti/xrmc/xrmc/src/photon \
+-I/home/golosio/progetti/xrmc/xrmc/src/randmt \
+-I/home/golosio/progetti/xrmc/xrmc/src/sample \
+-I/home/golosio/progetti/xrmc/xrmc/src/source \
+-I/home/golosio/progetti/xrmc/xrmc/src/spectrum \
+-I/home/golosio/progetti/xrmc/xrmc/src/xrmc_algo \
+-I/home/golosio/progetti/xrmc/xrmc/src/xrmc_math \
+-I/usr/local/include/xraylib"
+
+INCLUDES="$INCLUDES $QTINC"
+
+PATH="$PATH:$QTBIN"
+CXXFLAGS="$CXXFLAGS $QTINC"
+#look for xraylib
+#initialize pkg-config
+PKG_PROG_PKG_CONFIG
+
+
+#search for xraylib and other modules
+PKG_CHECK_MODULES([xraylib],libxrl >= 2.15.0)
+
+#search for xrmc and other modules
+#PKG_CHECK_MODULES([xrmc],libxrmc)
+
+# Now we check whether we can actually build a Qt app.
+cat > myqt.h << EOF
+#include <QObject>
+class Test : public QObject
+{
+Q_OBJECT
+public:
+  Test() {}
+  ~Test() {}
+public slots:
+  void receive() {}
+signals:
+  void send();
+};
+EOF
+
+cat > myqt.cpp << EOF
+#include "myqt.h"
+#include <QApplication>
+int main( int argc, char **argv )
+{
+  QApplication app( argc, argv );
+  Test t;
+  QObject::connect( &t, SIGNAL(send()), &t, SLOT(receive()) );
+}
+EOF
+
+AC_MSG_CHECKING(does moc work?)
+bnv_try_1="moc myqt.h -o moc_myqt.cpp"
+AC_TRY_EVAL(bnv_try_1)
+if test x"$ac_status" != x0; then
+   AC_MSG_ERROR(moc doesn't work)
+fi
+AC_MSG_RESULT(yes)
+AC_MSG_CHECKING(can I compile moc_myqt.cpp?)
+bnv_try_2="$CXX -c $CXXFLAGS -o moc_myqt.o moc_myqt.cpp"
+AC_TRY_EVAL(bnv_try_2)
+if test x"$ac_status" != x0; then
+   AC_MSG_ERROR(couldn't compile moc_myqt.cpp)
+fi
+AC_MSG_RESULT(yes)
+AC_MSG_CHECKING(can I compile myqt.cpp?)
+bnv_try_3="$CXX $QTINC -c $CXXFLAGS -o myqt.o myqt.cpp"
+AC_TRY_EVAL(bnv_try_3)
+if test x"$ac_status" != x0; then
+   AC_MSG_ERROR(couldn't compile myqt.cpp)
+fi
+AC_MSG_RESULT(yes)
+AC_MSG_CHECKING(can I link against QT?)
+nv_try_4="$CXX $LIBS -o myqt myqt.o moc_myqt.o"
+AC_TRY_EVAL(bnv_try_4)
+if test x"$ac_status" != x0; then
+   AC_MSG_ERROR(couldn't link)
+fi
+AC_MSG_RESULT(yes)
+
+AC_MSG_CHECKING(for mkoctfile)
+AC_TRY_EVAL(mkoctfile)
+if test x"$ac_status" != x0; then
+   AC_MSG_ERROR(mkoctfile is not in the path)
+fi
+AC_MSG_RESULT(yes)
+rm -f moc_myqt.cpp myqt.h myqt.cpp myqt.o myqt moc_myqt.o
+
+AC_CONFIG_FILES(Makefile)
+AC_OUTPUT
