@@ -23,6 +23,7 @@ ConsoleForm::ConsoleForm(QScrollBar *sb, QWidget *parent) :
     ui(new Ui::ConsoleForm)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     verticalScrollBar = sb;
 }
 

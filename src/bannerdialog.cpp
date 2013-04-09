@@ -23,6 +23,7 @@ BannerDialog::BannerDialog(QWidget *parent) :
     ui(new Ui::BannerDialog)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 BannerDialog::~BannerDialog()

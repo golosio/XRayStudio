@@ -25,6 +25,7 @@ RunDialog::RunDialog(IconDiagram *id, QWidget *parent) :
     ui(new Ui::RunDialog)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     iconDiagram = id;
 }
 

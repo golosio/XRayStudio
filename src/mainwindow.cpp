@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setAttribute(Qt::WA_DeleteOnClose);
+    //setAttribute(Qt::WA_DeleteOnClose);
     projectName = projectFolder = tmpProjectName = tmpProjectFolder;
     baseProjectFolder = "/home/golosio/qt/XRS/Projects";
     templateProjectFolder = "/home/golosio/qt/XRS/TemplateProjects";
@@ -81,7 +81,7 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 
 MainWindow::~MainWindow()
 {
-    console->close();
+    //console->close();
     delete ui;
 }
 

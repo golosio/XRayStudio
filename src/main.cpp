@@ -26,23 +26,7 @@ int main(int argc, char *argv[])
     XRayInit();
     QApplication a(argc, argv);
     MainWindow w;
-
-    w.setAttribute(Qt::WA_DeleteOnClose);
-    //IconDiagram *dw = w.iconDiagram();
-    //dw->addIcon(":/images/sphere.png", "device0",120,250);
-    //dw->addIcon(":/images/sphere.png", "device1",300,70);
-    //dw->addIcon(":/images/sphere.png", "device2",70,300);
-    //dw->addIcon(":/images/sphere.png", "device3",400,250);
-    //dw->addIcon(":/images/sphere.png", "This is a test with line breaks",350,350);
-    //dw->addArrow(0,2);
-    //dw->addArrow(0,4);
-    //dw->addArrow(2,4);
-    w.showMaximized();
-    //w.show();
-    //w.console = new ConsoleForm();
-    //w.console->show();
-    //w.iconDiagram()->console = w.console;
-    //console::form->textEdit()->insertPlainText("prova00\n");
+    //w.showMaximized();
 
     return a.exec();
 }

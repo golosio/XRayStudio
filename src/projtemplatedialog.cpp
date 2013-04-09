@@ -23,6 +23,7 @@ ProjTemplateDialog::ProjTemplateDialog(MainWindow *w, QWidget *parent) :
     ui(new Ui::ProjTemplateDialog)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     mainWindow = w;
 }
 

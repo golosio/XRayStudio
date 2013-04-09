@@ -25,6 +25,7 @@ ChooseSaveDevice::ChooseSaveDevice(IconDiagram *id, QWidget *parent) :
     ui(new Ui::ChooseSaveDevice)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     iconDiagram = id;
 }
 

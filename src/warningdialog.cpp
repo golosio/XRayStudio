@@ -22,6 +22,7 @@ WarningDialog::WarningDialog(QString message, QWidget *parent) :
     ui(new Ui::WarningDialog)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     ui->label->setText(message);
 }
 

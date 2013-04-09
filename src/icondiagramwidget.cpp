@@ -26,6 +26,7 @@ IconDiagramWidget::IconDiagramWidget(MainWindow *w, QWidget *parent) :
     ui(new Ui::IconDiagramWidget)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
     mainWindow = w;
 }
 
