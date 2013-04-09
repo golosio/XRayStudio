@@ -64,6 +64,7 @@ public:
     int saveProjectAs();
     int saveProject();
     bool isSaved();
+    int setBanner(QString bann_str);
 
 private slots:
 
@@ -80,8 +81,6 @@ private slots:
     void on_actionClose_project_triggered();
 
     void on_actionExit_triggered();
-
-    void on_MainWindow_destroyed();
 
     void on_centralWidget_destroyed();
 

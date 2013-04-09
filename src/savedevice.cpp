@@ -77,6 +77,13 @@ int DeviceInterf::Save(string path)
     SaveDeviceLinks(dev_fs);
     dev_fs.close();
 
+    devpath=path+"/"+devicePt->Name+".bnr";
+    dev_fs.open(devpath.c_str());
+    if (dev_fs) {
+        dev_fs << banner;
+        dev_fs.close();
+    }
+
     return 0;
 }
 

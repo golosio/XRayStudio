@@ -200,6 +200,7 @@ int IconDiagram::addIcon(int x, int y, DeviceInterf *di, QPixmap pm)
          else child=icon[idx].label;
     }
     else idx = child->index;
+     icon[idx].devInterf->parentWindow->setBanner(icon[idx].devInterf->banner.c_str());
     Qt::MouseButtons mouseButtons = event->buttons();
     if( mouseButtons == (Qt::RightButton) ) {
         openIconMenu(idx, event->globalPos()); //event->pos());

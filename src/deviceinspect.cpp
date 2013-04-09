@@ -29,6 +29,8 @@ DeviceInspect::DeviceInspect(DeviceInterf *di, QWidget *parent) :
 {
     ui->setupUi(this);
     devInterf = di;
+    ui->deviceNameLabel->setText(QString("Device name: ") + di->devicePt->Name.c_str());
+    ui->deviceTypeLabel->setText(QString("Device type: ") + di->devicePt->DeviceType.c_str());
     devInterf->parentWindow->setEnabled(false);
     setAttribute(Qt::WA_DeleteOnClose);
 }

@@ -88,7 +88,21 @@ int DeviceInterf::LoadNewDevice(string path, string file_name, string name_str)
     input_file.close();
     if (ierr!=0) return 1;
     clearInputNames();
-    return LoadDeviceCommands(input_path);
+    ierr = LoadDeviceCommands(input_path);
+    if (ierr!=0) return 1;
+
+    input_path=path+"/"+file_name+".bnr";
+    input_file.open(input_path.c_str());
+    if (input_file) {
+        stringstream oss;
+        // do the copy:
+        oss << input_file.rdbuf();
+        banner = oss.str();
+        input_file.close();
+    }
+    else banner = "";
+
+    return 0;
 }
 
 int DeviceInterf::LoadDeviceForm(istream &dev_fs, string name_str)

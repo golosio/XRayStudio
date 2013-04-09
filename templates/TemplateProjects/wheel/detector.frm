@@ -1,0 +1,2 @@
+Newdevice detectorarray detector
+End

@@ -173,27 +173,40 @@
               <height>100</height>
              </size>
             </property>
-            <widget class="QLabel" name="label">
-             <property name="geometry">
-              <rect>
-               <x>4</x>
-               <y>4</y>
-               <width>212</width>
-               <height>44</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>28</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>XRayStudio</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QLabel" name="bannerLabel">
+               <property name="font">
+                <font>
+                 <pointsize>28</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 255);
+border-color: rgb(128, 128, 128);</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Box</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <property name="lineWidth">
+                <number>2</number>
+               </property>
+               <property name="text">
+                <string>XRayStudio</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>

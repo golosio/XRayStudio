@@ -42,6 +42,7 @@ public:
     xrmc_device *devicePt;
     //DeviceForm *deviceForm;
     string commands;
+    string banner;
     DeviceInterf(MainWindow *w);
     //int Load(std::string path, std::string name);
     int Save(std::string path);

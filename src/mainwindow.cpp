@@ -57,12 +57,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->consoleScrollArea->setWidget(console);
     QVBoxLayout *dataLayout = new QVBoxLayout();
     ui->consoleScrollArea->setLayout(dataLayout);
-    console->resize(QSize(0.3*this->width(), ui->consoleScrollArea->height()-10));
+    console->resize(QSize(0.3*this->width(), ui->consoleScrollArea->height()-20));
 
     ui->diagramScrollArea->setWidget(iconDiagramWidget);
     QVBoxLayout *diagramLayout = new QVBoxLayout();
     ui->diagramScrollArea->setLayout(diagramLayout);
-    iconDiagramWidget->resize(QSize(0.6*this->width(),  ui->diagramScrollArea->height()-10));
+    iconDiagramWidget->resize(QSize(0.6*this->width(),  ui->diagramScrollArea->height()-20));
     QList<int> l;
     l.append(iconDiagramWidget->width());
     l.append(console->width());
@@ -256,6 +256,7 @@ int MainWindow::saveProject()
         dev_interf->Save(projectFolder.toStdString());
         QString pxpath = projectFolder + "/" + name.c_str() + ".png";
         iconDiagram()->icon[i].pixmap.save(pxpath);
+
         ofs << name << " " << iconDiagram()->icon[i].pos.x() << " " << iconDiagram()->icon[i].pos.y() << endl;
     }
     ofs.close();
@@ -360,17 +361,6 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
-void MainWindow::on_MainWindow_destroyed()
-{
-    if (!isSaved()) {
-        SaveChangesDialog *scd = new SaveChangesDialog(this);
-        scd->exec();
-        if (tmpProjectName=="") return;
-    }
-    close();
-
-}
-
 void MainWindow::on_centralWidget_destroyed()
 {
     if (!isSaved()) {
@@ -434,3 +424,8 @@ void MainWindow::mainWindowClosed()
     close();
 }
 */
+int MainWindow::setBanner(QString bann_str)
+{
+    ui->bannerLabel->setText(bann_str);
+    return 0;
+}
